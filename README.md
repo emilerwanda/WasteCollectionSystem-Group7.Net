@@ -202,3 +202,7 @@ AssignedDate
 
 CompletionDate
 
+🌿Here the ERD Diagram of our database:
+<img width="1310" height="719" alt="image" src="https://github.com/user-attachments/assets/5aae6d09-0c2b-4412-9b4a-54be1bbb2cf2" />
+
+
