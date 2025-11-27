@@ -1,48 +1,42 @@
-﻿// Install-Package Microsoft.EntityFrameworkCore
-using WasteCollectionSystem.Models;
-using Microsoft.EntityFrameworkCore; // This requires the NuGet package.
-using System.Collections.Generic;
-using System.Reflection.Emit;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using WasteCollectionSystem.Models;
 
 namespace WasteCollectionSystem.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
 
-        public DbSet<User> Users { get; set; }
-        public DbSet<WasteRequest> WasteRequests { get; set; }
-        public DbSet<Payment> Payments { get; set; }
-        public DbSet<Truck> Trucks { get; set; }
-        public DbSet<Assignment> Assignments { get; set; }
+        public DbSet<WasteRequest> WasteRequests { get; set; } = null!;
+        public DbSet<Payment> Payments { get; set; } = null!;
+        public DbSet<Truck> Trucks { get; set; } = null!;
+        public DbSet<Assignment> Assignments { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // User → WasteRequests
-            modelBuilder.Entity<User>()
-                .HasMany(u => u.WasteRequests)
-                .WithOne(r => r.User)
-                .HasForeignKey(r => r.UserID);
+            // WasteRequest → User (string key)
+            modelBuilder.Entity<WasteRequest>()
+                .HasOne(r => r.User)
+                .WithMany(u => u.WasteRequests)
+                .HasForeignKey(r => r.UserId);
 
-            // WasteRequest → Payments
+            // Other relationships stay the same
             modelBuilder.Entity<WasteRequest>()
                 .HasMany(r => r.Payments)
                 .WithOne(p => p.WasteRequest)
                 .HasForeignKey(p => p.RequestID);
 
-            // WasteRequest → Assignments
             modelBuilder.Entity<WasteRequest>()
                 .HasMany(r => r.Assignments)
                 .WithOne(a => a.WasteRequest)
                 .HasForeignKey(a => a.RequestID);
 
-            // Truck → Assignments
             modelBuilder.Entity<Truck>()
                 .HasMany(t => t.Assignments)
                 .WithOne(a => a.Truck)
@@ -50,4 +44,3 @@ namespace WasteCollectionSystem.Data
         }
     }
 }
-

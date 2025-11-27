@@ -1,0 +1,241 @@
+@page
+@model WasteCollectionSystem.Pages.Admin.IndexModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="admin-header">
+    <div class="row align-items-center">
+        <div class="col-md-8">
+            <h1><i class="fas fa-tachometer-alt me-3"></i>Admin Dashboard</h1>
+            <p class="mb-0 opacity-75">Welcome back! Here's an overview of your waste collection system.</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+            <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-light">
+                <i class="fas fa-user-plus me-2"></i>Add New User
+            </a>
+        </div>
+    </div>
+</div>
+
+@if (TempData["StatusMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle me-2"></i>@TempData["StatusMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<!-- Statistics Cards -->
+<div class="row g-4 mb-4">
+    <div class="col-lg-3 col-md-6">
+        <div class="stat-card users">
+            <div class="stat-icon users">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-value">@Model.TotalUsers</div>
+            <div class="stat-label">Total Users</div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="stat-card drivers">
+            <div class="stat-icon drivers">
+                <i class="fas fa-truck"></i>
+            </div>
+            <div class="stat-value">@Model.TotalDrivers</div>
+            <div class="stat-label">Active Drivers</div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="stat-card requests">
+            <div class="stat-icon requests">
+                <i class="fas fa-clipboard-list"></i>
+            </div>
+            <div class="stat-value">@Model.TotalRequests</div>
+            <div class="stat-label">Waste Requests</div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="stat-card trucks">
+            <div class="stat-icon trucks">
+                <i class="fas fa-truck-moving"></i>
+            </div>
+            <div class="stat-value">@Model.TotalTrucks</div>
+            <div class="stat-label">Fleet Trucks</div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Recent Users -->
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-header bg-transparent border-0 pt-4 pb-0">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-users me-2 text-primary"></i>Recent Users</h5>
+                    <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr class="text-muted small">
+                                <th class="border-0">Name</th>
+                                <th class="border-0">Role</th>
+                                <th class="border-0">Status</th>
+                                <th class="border-0">Joined</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var user in Model.RecentUsers)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="user-avatar me-2" style="width: 32px; height: 32px; font-size: 0.75rem;">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                            <div>
+                                                <div class="fw-semibold">@user.DisplayName</div>
+                                                <small class="text-muted">@user.Email</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @{
+                                            var badgeClass = user.Role?.ToLower() switch
+                                            {
+                                                "admin" => "badge-admin",
+                                                "driver" => "badge-driver",
+                                                "manager" => "badge-manager",
+                                                "supervisor" => "badge-supervisor",
+                                                _ => "badge-user"
+                                            };
+                                        }
+                                        <span class="badge @badgeClass">@user.Role</span>
+                                    </td>
+                                    <td>
+                                        <span class="status-badge @(user.Status == "Active" ? "status-active" : "status-inactive")">
+                                            @user.Status
+                                        </span>
+                                    </td>
+                                    <td class="text-muted small">@user.CreatedAt.ToString("MMM dd, yyyy")</td>
+                                </tr>
+                            }
+                            @if (!Model.RecentUsers.Any())
+                            {
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted py-4">
+                                        <i class="fas fa-users fa-2x mb-2 d-block opacity-50"></i>
+                                        No users found
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Waste Requests -->
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-header bg-transparent border-0 pt-4 pb-0">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-recycle me-2 text-primary"></i>Recent Requests</h5>
+                    <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr class="text-muted small">
+                                <th class="border-0">User</th>
+                                <th class="border-0">Type</th>
+                                <th class="border-0">Status</th>
+                                <th class="border-0">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var request in Model.RecentRequests)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="fw-semibold">@(request.User?.DisplayName ?? "N/A")</div>
+                                        <small class="text-muted">@request.Location</small>
+                                    </td>
+                                    <td>@request.WasteType</td>
+                                    <td>
+                                        @{
+                                            var statusClass = request.Status?.ToLower() switch
+                                            {
+                                                "pending" => "status-pending",
+                                                "completed" => "status-completed",
+                                                "active" or "in progress" => "status-active",
+                                                _ => "status-inactive"
+                                            };
+                                        }
+                                        <span class="status-badge @statusClass">@request.Status</span>
+                                    </td>
+                                    <td class="text-muted small">@request.RequestDate.ToString("MMM dd, yyyy")</td>
+                                </tr>
+                            }
+                            @if (!Model.RecentRequests.Any())
+                            {
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted py-4">
+                                        <i class="fas fa-clipboard-list fa-2x mb-2 d-block opacity-50"></i>
+                                        No requests found
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row g-4 mt-2">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-transparent border-0 pt-4 pb-0">
+                <h5 class="mb-0"><i class="fas fa-bolt me-2 text-primary"></i>Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-3 col-sm-6">
+                        <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-outline-primary w-100 py-3">
+                            <i class="fas fa-user-plus d-block mb-2 fa-lg"></i>
+                            Add User
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <a href="#" class="btn btn-outline-primary w-100 py-3">
+                            <i class="fas fa-truck d-block mb-2 fa-lg"></i>
+                            Manage Trucks
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <a href="#" class="btn btn-outline-primary w-100 py-3">
+                            <i class="fas fa-tasks d-block mb-2 fa-lg"></i>
+                            Assignments
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <a href="#" class="btn btn-outline-primary w-100 py-3">
+                            <i class="fas fa-chart-bar d-block mb-2 fa-lg"></i>
+                            Reports
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

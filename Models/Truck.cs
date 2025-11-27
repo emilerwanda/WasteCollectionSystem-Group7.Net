@@ -8,15 +8,13 @@ namespace WasteCollectionSystem.Models
         public int TruckID { get; set; }
 
         [Required, StringLength(20)]
-        public string PlateNumber { get; set; }
+        public string PlateNumber { get; set; } = null!;
 
         [Required, StringLength(150)]
-        public string DriverName { get; set; }
+        public string DriverName { get; set; } = null!;
 
-        public string Status { get; set; } = "Available"; // Available, Busy, Maintenance
+        public string Status { get; } = "Available"; // Available, Busy, Maintenance
 
-        // Navigation
-        public ICollection<Assignment> Assignments { get; set; }
+        public virtual ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
     }
 }
-
