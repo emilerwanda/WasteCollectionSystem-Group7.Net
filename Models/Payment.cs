@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace WasteCollectionSystem.Models
@@ -18,7 +17,6 @@ namespace WasteCollectionSystem.Models
         public string PaymentStatus { get; set; } = "Pending"; // Pending, Paid, Failed
 
         // Navigation
-        public WasteRequest WasteRequest { get; set; }
+        public required WasteRequest WasteRequest { get; set; }
     }
 }
-

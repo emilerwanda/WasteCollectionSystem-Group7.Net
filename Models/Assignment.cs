@@ -16,9 +16,8 @@ namespace WasteCollectionSystem.Models
 
         public DateTime? CompletionDate { get; set; }
 
-        // Navigation
-        public WasteRequest WasteRequest { get; set; }
-        public Truck Truck { get; set; }
+        // Navigation properties — made required + nullable fix for CS8618
+        public required WasteRequest WasteRequest { get; set; } = null!;
+        public required Truck Truck { get; set; } = null!;
     }
 }
-

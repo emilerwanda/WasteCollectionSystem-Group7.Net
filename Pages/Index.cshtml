@@ -1,10 +1,156 @@
 ﻿@page
+@using Microsoft.AspNetCore.Identity
+@using WasteCollectionSystem.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="row align-items-center g-4">
+        <div class="col-lg-7">
+            <h1 class="hero-title">
+                <span class="text-gradient">Smart Waste</span><br>
+                Collection System
+            </h1>
+            <p class="hero-subtitle">
+                Efficient, eco-friendly waste management solutions for your community. 
+                Schedule pickups, track trucks, and contribute to a cleaner environment.
+            </p>
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <div class="hero-buttons">
+                    <a href="#" class="btn btn-primary btn-lg me-2 mb-2">
+                        <i class="fas fa-plus-circle me-2"></i>New Request
+                    </a>
+                    <a href="#" class="btn btn-outline-light btn-lg mb-2">
+                        <i class="fas fa-history me-2"></i>My Requests
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="hero-buttons">
+                    <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary btn-lg me-2 mb-2">
+                        <i class="fas fa-user-plus me-2"></i>Get Started
+                    </a>
+                    <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-outline-light btn-lg mb-2">
+                        <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                    </a>
+                </div>
+            }
+        </div>
+        <div class="col-lg-5 d-none d-lg-block">
+            <div class="hero-illustration">
+                <i class="fas fa-recycle"></i>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- Features Section -->
+<div class="features-section">
+    <div class="text-center mb-5">
+        <h2 class="section-title">Why Choose Us?</h2>
+        <p class="section-subtitle">Modern solutions for modern waste management</p>
+    </div>
+    
+    <div class="row g-4">
+        <div class="col-lg-4 col-md-6">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <h4>Easy Scheduling</h4>
+                <p>Schedule waste pickup requests with just a few clicks. Choose your preferred date and time.</p>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-truck"></i>
+                </div>
+                <h4>Real-time Tracking</h4>
+                <p>Track collection trucks in real-time. Know exactly when your waste will be collected.</p>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-lg-4">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                <h4>Eco-Friendly</h4>
+                <p>Proper waste segregation and recycling support. Help us build a sustainable future.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Stats Section -->
+<div class="stats-section">
+    <div class="row g-4 text-center">
+        <div class="col-6 col-lg-3">
+            <div class="stat-item">
+                <div class="stat-number">500+</div>
+                <div class="stat-text">Active Users</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="stat-item">
+                <div class="stat-number">1,200+</div>
+                <div class="stat-text">Requests Completed</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="stat-item">
+                <div class="stat-number">25+</div>
+                <div class="stat-text">Fleet Trucks</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="stat-item">
+                <div class="stat-number">98%</div>
+                <div class="stat-text">Satisfaction Rate</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <!-- User Quick Actions -->
+    <div class="quick-actions-section">
+        <h3 class="mb-4">
+            <i class="fas fa-bolt me-2 text-primary"></i>Quick Actions
+        </h3>
+        <div class="row g-3">
+            <div class="col-6 col-md-3">
+                <a href="#" class="quick-action-card">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>New Request</span>
+                </a>
+            </div>
+            <div class="col-6 col-md-3">
+                <a href="#" class="quick-action-card">
+                    <i class="fas fa-history"></i>
+                    <span>My History</span>
+                </a>
+            </div>
+            <div class="col-6 col-md-3">
+                <a asp-area="Identity" asp-page="/Account/Manage/Index" class="quick-action-card">
+                    <i class="fas fa-user-cog"></i>
+                    <span>Profile</span>
+                </a>
+            </div>
+            <div class="col-6 col-md-3">
+                <a href="#" class="quick-action-card">
+                    <i class="fas fa-headset"></i>
+                    <span>Support</span>
+                </a>
+            </div>
+        </div>
+    </div>
+}
