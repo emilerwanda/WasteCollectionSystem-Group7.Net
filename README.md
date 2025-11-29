@@ -202,7 +202,12 @@ AssignedDate
 
 CompletionDate
 
-🌿Here the ERD Diagram of our database:
+🌿Here the ERD Diagram of our database before 2fa and reset passsword:
 <img width="1310" height="719" alt="image" src="https://github.com/user-attachments/assets/5aae6d09-0c2b-4412-9b4a-54be1bbb2cf2" />
+
+🌴🌳Here is the ERD  after the implementation of 2fa, resetpassword packages:
+<img width="970" height="701" alt="image" src="https://github.com/user-attachments/assets/7c63f6fa-1419-43b5-88ca-03a4b540ec80" />
+
+
 
 
